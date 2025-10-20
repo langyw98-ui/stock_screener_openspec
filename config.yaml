@@ -1,0 +1,7 @@
+# 项目配置文件
+
+# 存放股票代码的Excel文件路径
+excel_path: "data/stock_list.xlsx"
+
+# 最大线程数，控制并发下载的数量
+max_threads: 4

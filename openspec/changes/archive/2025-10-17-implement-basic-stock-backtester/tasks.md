@@ -1,0 +1,11 @@
+## 1. Implementation
+- [x] 1.1 创建配置模块 (config.py)，实现读取和解析config.yaml的功能
+- [x] 1.2 创建数据源模块 (xtquant_feed.py)，封装xtquant数据接口
+- [x] 1.3 创建核心引擎模块 (engine.py)，负责任务调度和并发执行
+- [x] 1.4 创建主执行文件 (run.py)，作为程序入口点
+- [x] 1.5 创建项目配置文件 (config.yaml)，定义必要的配置项
+- [x] 1.6 创建依赖文件 (requirements.txt)，定义项目所需的Python库
+- [x] 1.7 实现股票代码格式化功能，将A股代码转换为xtquant要求的格式
+- [x] 1.8 实现时间范围计算逻辑，根据start_date和end_date参数确定下载范围
+- [x] 1.9 实现多线程并发下载功能，使用tqdm显示进度条
+- [x] 1.10 实现错误处理机制，区分配置错误和单个股票下载错误
