@@ -22,6 +22,7 @@ class Config:
         self.config_path = config_path
         self.excel_path = None
         self.max_threads = None
+        self.screener = None
         self._load_config()
     
     def _load_config(self):
@@ -51,5 +52,8 @@ class Config:
         # 设置配置项
         self.excel_path = config_data['excel_path']
         self.max_threads = config_data['max_threads']
+        
+        # 设置筛选器配置（如果存在）
+        self.screener = config_data.get('screener', None)
         
         logger.info(f"配置项设置完成: excel_path={self.excel_path}, max_threads={self.max_threads}")

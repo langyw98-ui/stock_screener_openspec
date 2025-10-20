@@ -70,7 +70,7 @@ def download_single_stock(stock_code, start_date, end_date, period='1d', adjustm
         adjustment (str): 复权方式
         
     Returns:
-        tuple: (stock_code, data) 股票代码和数据
+        pandas.DataFrame: 股票数据
     """
     try:
         logger.info(f"开始下载股票 {stock_code} 的数据")
@@ -88,7 +88,7 @@ def download_single_stock(stock_code, start_date, end_date, period='1d', adjustm
         data = download_stock_data(formatted_code, start_date, end_date, period, adjustment)
         
         logger.info(f"股票 {stock_code} 数据下载完成")
-        return formatted_code, data
+        return data
     except Exception as e:
         # 记录错误但不终止程序
         logger.error(f"下载股票 {stock_code} 数据时出错: {str(e)}")
@@ -130,9 +130,9 @@ def download_all_stocks(stock_list, start_date, end_date, period='1d', adjustmen
                           desc="下载进度"):
             stock = future_to_stock[future]
             try:
-                stock_code, data = future.result()
-                results[stock_code] = data
-                logger.debug(f"股票 {stock_code} 数据处理完成")
+                data = future.result()
+                results[stock] = data
+                logger.debug(f"股票 {stock} 数据处理完成")
             except Exception as e:
                 logger.error(f"处理股票 {stock} 时发生未预期的错误: {str(e)}")
                 print(f"处理股票 {stock} 时发生未预期的错误: {str(e)}")

@@ -78,9 +78,8 @@ class TestIntegration(unittest.TestCase):
         self.assertRegex(end_date, r'^\d{4}-\d{2}-\d{2}$')
         
         # 5. 测试单只股票下载（使用模拟数据）
-        stock_code_formatted, data = download_single_stock('000001', start_date, end_date)
+        data = download_single_stock('000001', start_date, end_date)
         # 验证返回结果
-        self.assertEqual(stock_code_formatted, '000001.SZ')
         self.assertIsNotNone(data)
         self.assertIsInstance(data, pd.DataFrame)
         # 验证数据结构

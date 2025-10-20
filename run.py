@@ -5,6 +5,8 @@ import pandas as pd
 from stock_backtester.config import Config
 from stock_backtester.engine import download_all_stocks, calculate_time_range
 from stock_backtester.logger import setup_logging, get_logger
+from stock_backtester.screener.screener import Screener
+from stock_backtester.screener.filters import MAFilter, WRFilter, GeneralComparisonFilter
 
 # 设置日志
 setup_logging()
@@ -40,7 +42,7 @@ def main():
         logger.info(f"数据下载时间范围: {actual_start_date} 到 {actual_end_date}")
         
         # 定义所有需要下载的周期
-        periods = ['1m', '5m', '30m', '1d']
+        periods = ['1m', '5m', '30m', '1d']  # 支持多种周期数据下载
         adjustment = 'pre' # 复权方式，默认前复权
         
         # 为每个周期下载所有股票数据
@@ -74,6 +76,57 @@ def main():
             if successful_stocks:
                 print(f"成功下载的股票 ({period}): {successful_stocks}")
                 logger.info(f"成功下载的股票 ({period}): {successful_stocks}")
+        
+        # 创建筛选器管理器
+        screener = Screener(actual_start_date, actual_end_date)
+        
+        # 通过代码添加筛选条件
+        # 示例：添加MA筛选条件（MA5 > MA10）
+        ma_filter = MAFilter(period1=5, period2=10, condition='gt')
+        screener.add_filter(ma_filter)
+        
+        # 示例：添加WR筛选条件（WR < -80）
+        wr_filter = WRFilter(period=14, threshold=-80, condition='lt')
+        screener.add_filter(wr_filter)
+        
+        # 示例：添加收盘价高于MA5的筛选条件（使用通用比较筛选器）
+        price_above_ma_filter = GeneralComparisonFilter('close', 'MA5', 'gt')
+        screener.add_filter(price_above_ma_filter)
+        
+        # 示例：添加通用比较筛选条件（收盘价 > 开盘价）
+        general_filter = GeneralComparisonFilter('close', 'open', 'gt')
+        screener.add_filter(general_filter)
+        
+        # 执行股票筛选
+        print("\n开始执行股票筛选...")
+        logger.info("开始执行股票筛选...")
+        
+        # 获取用于筛选的数据周期（默认使用日线数据）
+        screening_period = '1d'  # 可以根据需要修改为其他周期，如'5m', '30m'等
+        
+        # 显示使用的筛选周期
+        print(f"使用 {screening_period} 周期数据进行筛选")
+        logger.info(f"使用 {screening_period} 周期数据进行筛选")
+        
+        try:
+            # 执行筛选，传递股票代码列表和数据范围参数
+            stock_codes = list(stock_list)  # 使用从Excel文件读取的股票代码列表
+            screened_stocks = screener.screen(stock_codes)
+            
+            print(f"\n筛选完成，符合条件的股票数量: {len(screened_stocks)}")
+            logger.info(f"筛选完成，符合条件的股票数量: {len(screened_stocks)}")
+            
+            if screened_stocks:
+                print(f"符合条件的股票: {screened_stocks}")
+                logger.info(f"符合条件的股票: {screened_stocks}")
+            else:
+                print("没有股票符合条件")
+                logger.info("没有股票符合条件")
+                
+        except Exception as e:
+            error_msg = f"股票筛选执行出错: {str(e)}"
+            print(error_msg)
+            logger.error(error_msg, exc_info=True)
         
         # 这里可以添加进一步的数据处理逻辑
         # 例如：数据存储、分析等
