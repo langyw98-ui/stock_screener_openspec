@@ -25,19 +25,19 @@ def format_stock_code(stock_code):
     stock_code = str(stock_code).strip()
     
     # 处理已经符合格式的代码 (如 000001.SZ, 600519.SH)
-    if re.match(r'^\d{6}\.(SH|SZ), stock_code):
+    if re.match(r'^\d{6}\.(SH|SZ)$', stock_code):
         logger.debug(f"股票代码已符合格式: {stock_code}")
         return stock_code
     
     # 处理带前缀的代码 (如 SZ.000001)
-    if re.match(r'^(SH|SZ)\.\d{6}, stock_code):
+    if re.match(r'^(SH|SZ)\.\d{6}$', stock_code):
         prefix, code = stock_code.split('.')
         formatted_code = f"{code}.{prefix}"
         logger.debug(f"格式化带前缀的代码: {stock_code} -> {formatted_code}")
         return formatted_code
     
     # 处理纯数字代码 (如 000001, 600519)
-    if re.match(r'^\d+, stock_code):
+    if re.match(r'^\d+$', stock_code):
         # 检查长度，只有6位数字才是有效的
         if len(stock_code) != 6:
             # 如果不是6位数字，补齐到6位或认为是无效代码

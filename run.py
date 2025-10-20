@@ -39,34 +39,41 @@ def main():
         print(f"数据下载时间范围: {actual_start_date} 到 {actual_end_date}")
         logger.info(f"数据下载时间范围: {actual_start_date} 到 {actual_end_date}")
         
-        # 设置其他参数
-        period = '1d'      # 数据周期
+        # 定义所有需要下载的周期
+        periods = ['1m', '5m', '30m', '1d']
         adjustment = 'pre' # 复权方式，默认前复权
         
-        # 下载所有股票数据
-        logger.info("开始下载股票数据...")
-        print("开始下载股票数据...")
-        stock_data = download_all_stocks(
-            stock_list, 
-            actual_start_date, 
-            actual_end_date, 
-            period, 
-            adjustment, 
-            config.max_threads
-        )
-        
-        # 处理结果
-        successful_downloads = sum(1 for data in stock_data.values() if data is not None)
-        failed_downloads = len(stock_data) - successful_downloads
-        
-        print(f"数据下载完成: 成功 {successful_downloads} 只，失败 {failed_downloads} 只")
-        logger.info(f"数据下载完成: 成功 {successful_downloads} 只，失败 {failed_downloads} 只")
-        
-        # 显示成功下载的股票
-        successful_stocks = [code for code, data in stock_data.items() if data is not None]
-        if successful_stocks:
-            print(f"成功下载的股票: {successful_stocks}")
-            logger.info(f"成功下载的股票: {successful_stocks}")
+        # 为每个周期下载所有股票数据
+        all_stock_data = {}
+        for period in periods:
+            print(f"\n开始下载 {period} 周期的股票数据...")
+            logger.info(f"开始下载 {period} 周期的股票数据...")
+            
+            # 下载所有股票数据
+            stock_data = download_all_stocks(
+                stock_list, 
+                actual_start_date, 
+                actual_end_date, 
+                period, 
+                adjustment, 
+                config.max_threads
+            )
+            
+            # 存储结果
+            all_stock_data[period] = stock_data
+            
+            # 处理结果
+            successful_downloads = sum(1 for data in stock_data.values() if data is not None)
+            failed_downloads = len(stock_data) - successful_downloads
+            
+            print(f"{period} 周期数据下载完成: 成功 {successful_downloads} 只，失败 {failed_downloads} 只")
+            logger.info(f"{period} 周期数据下载完成: 成功 {successful_downloads} 只，失败 {failed_downloads} 只")
+            
+            # 显示成功下载的股票
+            successful_stocks = [code for code, data in stock_data.items() if data is not None]
+            if successful_stocks:
+                print(f"成功下载的股票 ({period}): {successful_stocks}")
+                logger.info(f"成功下载的股票 ({period}): {successful_stocks}")
         
         # 这里可以添加进一步的数据处理逻辑
         # 例如：数据存储、分析等
