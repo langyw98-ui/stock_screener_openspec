@@ -111,7 +111,7 @@ def main():
         try:
             # 执行筛选，传递股票代码列表和数据范围参数
             stock_codes = list(stock_list)  # 使用从Excel文件读取的股票代码列表
-            screened_stocks = screener.screen(stock_codes)
+            screened_stocks = screener.exec(stock_codes)
             
             print(f"\n筛选完成，符合条件的股票数量: {len(screened_stocks)}")
             logger.info(f"筛选完成，符合条件的股票数量: {len(screened_stocks)}")

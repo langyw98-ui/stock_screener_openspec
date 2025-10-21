@@ -45,20 +45,19 @@ def main():
         # 添加筛选条件1：收盘价高于MA5
         print("添加筛选条件1：收盘价高于MA5")
         price_above_ma_filter = GeneralComparisonFilter('close', 'MA5', 'gt')
-        screener.add_filter(price_above_ma_filter)
         
         # 添加筛选条件2：基于30分钟线的WR数据小于-80
         print("添加筛选条件2：基于30分钟线的WR数据小于-80")
         from stock_backtester.screener.filters import WRFilter
         wr_filter = WRFilter(period=21, threshold=-75, condition='lt', data_period='30m')
-        screener.add_filter(wr_filter)
+        screener.add_filter(wr_filter).add_filter(price_above_ma_filter)
         
         # 执行股票筛选
         print("\n开始执行股票筛选...")
         logger.info("开始执行股票筛选...")
         
         # 执行筛选
-        screened_stocks = screener.screen(stock_list)
+        screened_stocks = screener.exec(stock_list)
         
         print(f"\n筛选完成，符合条件的股票数量: {len(screened_stocks)}")
         logger.info(f"筛选完成，符合条件的股票数量: {len(screened_stocks)}")

@@ -79,7 +79,7 @@ class Screener:
         self.filters.clear()
         logger.debug("清空筛选链")
     
-    def screen(self, stock_codes: List[str]) -> List[str]:
+    def exec(self, stock_codes: List[str]) -> List[str]:
         """
         执行链式筛选
         

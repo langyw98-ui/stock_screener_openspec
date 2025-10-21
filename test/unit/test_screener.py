@@ -215,7 +215,7 @@ class TestScreener(unittest.TestCase):
         self.assertIn('WR14_1d', chain)  # 现在WRFilter包含数据周期信息
         
         # 执行筛选
-        result = screener.screen(self.test_stock_data)
+        result = screener.exec(self.test_stock_data)
         
         # 验证结果类型
         self.assertIsInstance(result, list)
