@@ -35,7 +35,7 @@ def main():
         logger.info(f"共找到 {len(stock_list)} 只股票")
         
         # 计算时间范围
-        start_date, end_date = calculate_time_range(None, None)
+        start_date, end_date = calculate_time_range("2025-06-20", "2025-10-20")
         print(f"数据下载时间范围: {start_date} 到 {end_date}")
         logger.info(f"数据下载时间范围: {start_date} 到 {end_date}")
         
@@ -50,7 +50,7 @@ def main():
         # 添加筛选条件2：基于30分钟线的WR数据小于-80
         print("添加筛选条件2：基于30分钟线的WR数据小于-80")
         from stock_backtester.screener.filters import WRFilter
-        wr_filter = WRFilter(period=14, threshold=-80, condition='lt', data_period='30m')
+        wr_filter = WRFilter(period=21, threshold=-75, condition='lt', data_period='30m')
         screener.add_filter(wr_filter)
         
         # 执行股票筛选

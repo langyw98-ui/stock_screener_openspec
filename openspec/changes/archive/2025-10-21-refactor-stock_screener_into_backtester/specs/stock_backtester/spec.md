@@ -1,8 +1,4 @@
-# stock_backtester Specification
-
-## Purpose
-股票回测系统是一个用于下载股票数据、执行回测策略和筛选股票的系统。它支持多种数据周期，提供技术指标计算和筛选功能，并采用模块化架构设计，包括数据引擎、数据源和筛选器等组件。
-## Requirements
+## MODIFIED Requirements
 ### Requirement: Configuration Management
 系统必须提供配置管理功能，能够读取和解析YAML格式的配置文件。系统 SHALL 提供配置管理功能，能够读取和解析YAML格式的配置文件。
 
@@ -328,4 +324,3 @@
 - **AND** 技术指标：MA（移动平均线，支持自定义周期）、WR（威廉指标，支持自定义周期）
 - **AND** 价格字段：open（开盘价）、high（最高价）、low（最低价）、close（收盘价）、volume（成交量）、amount（成交额）
 - **AND** 数值：整数或浮点数
-
